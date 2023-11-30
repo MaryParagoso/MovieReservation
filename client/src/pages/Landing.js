@@ -24,7 +24,7 @@ function Landing() {
           </Breadcrumb>
           <div style={centerContent}>
             <h1 style={Context1}>Welcome to Our Website</h1>
-            <p style={Context2}>Explore amazing content and more!</p>
+            <p style={Context2}>Explore amazing content and more!!</p>
             <div>
               <Button ghost size="large" style={buttonLogin}>
                 Log In
