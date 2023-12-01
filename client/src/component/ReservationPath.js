@@ -1,12 +1,16 @@
 import React from "react";
-import { Form, Select } from "antd";
+import { Form, Select } from "antd"; // Import Form and Select from antd
 import { Container, CancelWallpaper } from "../stylesheets/CssCancellation";
 import { Button } from "antd";
 import { ArrowLeftOutlined } from "@ant-design/icons";
+import { CancelContainer } from "../stylesheets/CssCancellation";
+import { useNavigate } from "react-router-dom";
 
 const { Option } = Select;
 
 const ReservationPath = ({ selectedDate, onDateChange, onBackButtonClick }) => {
+  const navigate = useNavigate();
+
   const generateDateOptions = () => {
     const today = new Date();
     const dateOptions = [];
@@ -19,6 +23,11 @@ const ReservationPath = ({ selectedDate, onDateChange, onBackButtonClick }) => {
     }
 
     return dateOptions;
+  };
+
+  const handleDateChange = (date) => {
+    console.log('Handling date change:', date);
+    navigate(`/movielist/${date}`);
   };
 
   return (
@@ -38,7 +47,7 @@ const ReservationPath = ({ selectedDate, onDateChange, onBackButtonClick }) => {
             }}
             type="default"
             icon={<ArrowLeftOutlined />}
-            onClick={onBackButtonClick} // Use the provided back button click handler
+            onClick={onBackButtonClick}
           ></Button>
         </div>
         <h1
@@ -56,19 +65,30 @@ const ReservationPath = ({ selectedDate, onDateChange, onBackButtonClick }) => {
             justifyContent: "center",
           }}
         >
-          <Form>
-            <div style={{ backgroundColor: "white" }}>
-              <Form.Item label="Select a Date:">
-                <Select value={selectedDate} onChange={onDateChange}>
-                  {generateDateOptions().map((date) => (
-                    <Option key={date} value={date}>
-                      {date}
-                    </Option>
-                  ))}
-                </Select>
-              </Form.Item>
-            </div>
-          </Form>
+          <CancelContainer
+            style={{
+              alignItems: "center",
+              border: "1px red solid",
+            }}
+          >
+            <Form>
+              <div style={{ backgroundColor: "white" }}>
+                <Form.Item label="Select a Date:">
+                  <Select
+                    style={{ width: "100%", minWidth: "200px" }}
+                    value={selectedDate}
+                    onChange={handleDateChange}
+                  >
+                    {generateDateOptions().map((date) => (
+                      <Option key={date} value={date}>
+                        {date}
+                      </Option>
+                    ))}
+                  </Select>
+                </Form.Item>
+              </div>
+            </Form>
+          </CancelContainer>
         </div>
       </CancelWallpaper>
     </Container>

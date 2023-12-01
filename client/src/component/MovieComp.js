@@ -37,7 +37,7 @@ const InfoColumn = styled.div`
 `;
 
 const MovieTime = styled.span`
-  font-size: 20pxpx;
+  font-size: 20px;
   font-weight: bold;
   text-align: center;
   padding-top: 15px;
@@ -47,14 +47,19 @@ const MovieTime = styled.span`
 `;
 
 const MovieComponent = ({ movie }) => {
+  console.log('Movie Data in Component:', movie);
   return (
     <MovieContainer>
-      <CoverImage src={movie.poster} />
+      <CoverImage src={movie.poster} alt={`Poster for ${movie.title}`} />
       <MovieName>{movie.title}</MovieName>
       <InfoColumn>
         <span>Year: {movie.year}</span>
         <span>Genre: {movie.genre}</span>
         <MovieTime>Time: {movie.time}</MovieTime>
+        <span>Cinema Number: {movie.cinema_number}</span>
+        <span>Date: {movie.date}</span>
+        <span>Is Premium: {movie.isPremium ? 'Yes' : 'No'}</span>
+        {/* Add more information as needed */}
       </InfoColumn>
     </MovieContainer>
   );

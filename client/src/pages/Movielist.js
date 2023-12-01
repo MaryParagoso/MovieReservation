@@ -1,4 +1,6 @@
-import React, { useState } from "react";
+// src/pages/Movielist.js
+import React, { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Container,
   Header,
@@ -10,13 +12,51 @@ import {
   ButtonContainer,
   Button,
 } from "../stylesheets/Cssmovielist";
+import axios from 'axios';
 import SearchInput from "../component/SearchInput";
 import MovieComponent from "../component/MovieComp";
-import { moviesData } from "../component/MoviesData";
+import movieApi from "../apicalls/movieApi";
 
 function Movielist() {
-  const [searchQuery, updateSearchQuery] = useState("");
+  const [movies, setMovies] = useState([]);
+  const [searchQuery, updateSearchQuery] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
+
+  // Get the selected date from the route parameters
+  const { selectedDate } = useParams();
+  const navigate = useNavigate();
+
+// src/pages/Movielist.js
+// src/pages/Movielist.js
+useEffect(() => {
+  const fetchMovies = async () => {
+    try {
+      // Adjust your API call to include the selected date
+      const moviesData = await movieApi.getMovies({ date: selectedDate });
+      
+      // Log the received movies data
+      console.log('Movies Data:', moviesData);
+
+      // Filter movies based on the selectedDate
+      const filteredMovies = moviesData.filter(movie => {
+        // Assuming movie.date is a Date object
+        const movieDate = movie.date.toISOString().split("T")[0];
+
+        // Compare with the selectedDate
+        return movieDate === selectedDate;
+      });
+
+      // Set the filtered movies
+      setMovies(filteredMovies);
+    } catch (error) {
+      console.error('Error fetching movies:', error);
+      // Handle error
+    }
+  };
+
+  fetchMovies();
+}, [selectedDate]);
+
 
   const onTextChange = (event) => {
     updateSearchQuery(event.target.value);
@@ -27,11 +67,9 @@ function Movielist() {
   };
 
   const itemsPerPage = 10;
-
   const startIndex = (currentPage - 1) * itemsPerPage;
   const endIndex = startIndex + itemsPerPage;
-
-  const displayedMovies = moviesData.slice(startIndex, endIndex);
+  const displayedMovies = movies.slice(startIndex, endIndex);
 
   return (
     <Container>
